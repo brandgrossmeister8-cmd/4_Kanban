@@ -58,6 +58,16 @@
                 </div>
 
                 <div class="filter-group">
+                    <label for="filter-status">Статус</label>
+                    <select id="filter-status">
+                        <option value="">Все статусы</option>
+                        <option value="todo">К выполнению</option>
+                        <option value="in-progress">В работе</option>
+                        <option value="done">Готово</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
                     <label for="filter-deadline-from">Срок от</label>
                     <input type="date" id="filter-deadline-from">
                 </div>
@@ -195,8 +205,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- Подключение наших скриптов -->
-    <script src="js/config.js?v=20"></script>
-    <script src="js/supabase.js?v=20"></script>
-    <script src="js/script.js?v=20"></script>
+    <script src="js/config.js?v=21"></script>
+    <script src="js/supabase.js?v=21"></script>
+    <script src="js/script.js?v=21"></script>
 </body>
 </html>

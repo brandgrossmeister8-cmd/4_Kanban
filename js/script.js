@@ -185,6 +185,7 @@ async function applyFilters() {
         creator_id: document.getElementById('filter-creator').value || undefined,
         assignee_id: document.getElementById('filter-assignee').value || undefined,
         category: document.getElementById('filter-category').value || undefined,
+        status: document.getElementById('filter-status').value || undefined,
         deadline_from: document.getElementById('filter-deadline-from').value || undefined,
         deadline_to: document.getElementById('filter-deadline-to').value || undefined,
     };
@@ -197,6 +198,7 @@ function clearFilters() {
     document.getElementById('filter-creator').value = '';
     document.getElementById('filter-assignee').value = '';
     document.getElementById('filter-category').value = '';
+    document.getElementById('filter-status').value = '';
     document.getElementById('filter-deadline-from').value = '';
     document.getElementById('filter-deadline-to').value = '';
 
@@ -343,6 +345,24 @@ async function deleteTask(taskId) {
     }
 }
 
+async function changeTaskStatus(taskId, newStatus) {
+    try {
+        const { error } = await supabase
+            .from('canban_tasks')
+            .update({ status: newStatus })
+            .eq('id', taskId);
+
+        if (error) throw error;
+
+        console.log('Статус задачи изменен:', taskId, newStatus);
+        await loadTasks(currentFilters);
+
+    } catch (error) {
+        console.error('Ошибка изменения статуса:', error);
+        alert('Ошибка при изменении статуса: ' + error.message);
+    }
+}
+
 // =====================================================
 // Модальное окно
 // =====================================================
@@ -416,6 +436,14 @@ function renderTask(task) {
             <div class="task-person"><strong>Исполнитель:</strong> ${escapeHtml(assigneeName)}</div>
         </div>
         ${deadlineHtml}
+        <div class="task-status-selector">
+            <label>Статус:</label>
+            <select class="status-dropdown" onchange="changeTaskStatus('${task.id}', this.value)">
+                <option value="todo" ${task.status === 'todo' ? 'selected' : ''}>К выполнению</option>
+                <option value="in-progress" ${task.status === 'in-progress' ? 'selected' : ''}>В работе</option>
+                <option value="done" ${task.status === 'done' ? 'selected' : ''}>Готово</option>
+            </select>
+        </div>
         <div class="task-actions">
             <button class="task-edit" onclick="editTask('${task.id}')">Редактировать</button>
             <button class="task-delete" onclick="deleteTask('${task.id}')">Удалить</button>
