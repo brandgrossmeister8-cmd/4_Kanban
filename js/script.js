@@ -105,8 +105,8 @@ async function loadTasks(filters = {}) {
         query = query.eq('category', filters.category);
     }
 
-    if (filters.status) {
-        query = query.eq('status', filters.status);
+    if (filters.task_status) {
+        query = query.eq('task_status', filters.task_status);
     }
 
     if (filters.deadline_from) {
@@ -242,7 +242,7 @@ async function editTask(taskId) {
     if (!task) return;
 
     editingTaskId = taskId;
-    currentColumn = task.status;
+    currentColumn = task.task_status;
 
     document.querySelector('.modal-content h2').textContent = 'Редактирование задачи';
     document.getElementById('task-title').value = task.title;
@@ -294,7 +294,7 @@ async function saveTask() {
         creator_id: currentUser.id,
         assignee_id,
         deadline: deadline || null,
-        status: currentColumn
+        task_status: currentColumn
     };
 
     try {
@@ -353,7 +353,7 @@ async function changeTaskStatus(taskId, newStatus) {
     try {
         const { error } = await supabase
             .from('canban_tasks')
-            .update({ status: newStatus })
+            .update({ task_status: newStatus })
             .eq('id', taskId);
 
         if (error) throw error;
@@ -443,9 +443,9 @@ function renderTask(task) {
         <div class="task-status-selector">
             <label>Статус:</label>
             <select class="status-dropdown" onchange="changeTaskStatus('${task.id}', this.value)">
-                <option value="todo" ${task.status === 'todo' ? 'selected' : ''}>К выполнению</option>
-                <option value="in-progress" ${task.status === 'in-progress' ? 'selected' : ''}>В работе</option>
-                <option value="done" ${task.status === 'done' ? 'selected' : ''}>Готово</option>
+                <option value="todo" ${task.task_status === 'todo' ? 'selected' : ''}>К выполнению</option>
+                <option value="in-progress" ${task.task_status === 'in-progress' ? 'selected' : ''}>В работе</option>
+                <option value="done" ${task.task_status === 'done' ? 'selected' : ''}>Готово</option>
             </select>
         </div>
         <div class="task-actions">
@@ -454,7 +454,7 @@ function renderTask(task) {
         </div>
     `;
 
-    const container = document.getElementById(`${task.status}-tasks`);
+    const container = document.getElementById(`${task.task_status}-tasks`);
     container.appendChild(taskElement);
 
     setupTaskDrag(taskElement);
@@ -587,7 +587,7 @@ function renderTableView() {
             <td>${escapeHtml(assignee?.full_name || '-')}</td>
             <td class="table-deadline ${isOverdue ? 'overdue' : ''}">${deadlineText}</td>
             <td>
-                <span class="table-status status-${task.status}">${statusNames[task.status]}</span>
+                <span class="table-status status-${task.task_status}">${statusNames[task.task_status]}</span>
             </td>
             <td>${createdAt}</td>
             <td class="table-actions">
@@ -685,7 +685,7 @@ async function handleDrop(e) {
             // Обновление статуса в БД
             const { error } = await supabase
                 .from('canban_tasks')
-                .update({ status: newStatus })
+                .update({ task_status: newStatus })
                 .eq('id', taskId);
 
             if (error) throw error;

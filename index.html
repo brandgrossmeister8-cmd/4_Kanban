@@ -58,8 +58,8 @@
                 </div>
 
                 <div class="filter-group">
-                    <label for="filter-status">Статус</label>
-                    <select id="filter-status">
+                    <label for="filter-task-status">Статус</label>
+                    <select id="filter-task-status">
                         <option value="">Все статусы</option>
                         <option value="todo">К выполнению</option>
                         <option value="in-progress">В работе</option>
@@ -87,7 +87,7 @@
         <!-- Канбан доска (вид по умолчанию) -->
         <div id="board-view" class="board-view">
             <div class="board">
-            <div class="column" data-status="todo">
+            <div class="column" data-task-status="todo">
                 <div class="column-header">
                     <h2>К выполнению</h2>
                     <span class="count">0</span>
@@ -96,7 +96,7 @@
                 <div class="tasks" id="todo-tasks"></div>
             </div>
 
-            <div class="column" data-status="in-progress">
+            <div class="column" data-task-status="in-progress">
                 <div class="column-header">
                     <h2>В работе</h2>
                     <span class="count">0</span>
@@ -105,7 +105,7 @@
                 <div class="tasks" id="in-progress-tasks"></div>
             </div>
 
-            <div class="column" data-status="done">
+            <div class="column" data-task-status="done">
                 <div class="column-header">
                     <h2>Готово</h2>
                     <span class="count">0</span>
@@ -205,8 +205,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- Подключение наших скриптов -->
-    <script src="js/config.js?v=22"></script>
-    <script src="js/supabase.js?v=22"></script>
-    <script src="js/script.js?v=22"></script>
+    <script src="js/config.js?v=23"></script>
+    <script src="js/supabase.js?v=23"></script>
+    <script src="js/script.js?v=23"></script>
 </body>
 </html>
