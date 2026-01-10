@@ -105,6 +105,10 @@ async function loadTasks(filters = {}) {
         query = query.eq('category', filters.category);
     }
 
+    if (filters.status) {
+        query = query.eq('status', filters.status);
+    }
+
     if (filters.deadline_from) {
         query = query.gte('deadline', filters.deadline_from);
     }
