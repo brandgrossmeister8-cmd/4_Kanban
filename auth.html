@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Канбан Доска</title>
+    <link rel="stylesheet" href="styles.css?v=5">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <h1>Канбан Доска</h1>
+
+            <!-- Форма входа -->
+            <div id="login-form" class="auth-form">
+                <h2>Вход в Канбан Доску</h2>
+                <p style="color: #666; margin-bottom: 20px; font-size: 0.9rem;">
+                    Введите ваше полное имя. Если вы уже зарегистрированы - выберите себя из списка. Если новый пользователь - введите ваше имя, и профиль будет создан автоматически.
+                </p>
+
+                <div class="form-group">
+                    <label for="user-name">Ваше полное имя</label>
+                    <input type="text" id="user-name" placeholder="Например: Маргарита Осмаева" required autocomplete="name" autofocus>
+                </div>
+
+                <div id="login-error" class="error-message"></div>
+                <div id="users-list" class="users-list" style="display: none;"></div>
+
+                <button onclick="handleLogin()" class="btn-primary btn-full">Войти</button>
+                <button onclick="toggleUsersList(event)" class="btn-secondary btn-full" type="button" style="margin-top: 10px;">Показать список пользователей</button>
+            </div>
+
+            <!-- Индикатор загрузки -->
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Загрузка...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Подключение Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Подключение наших скриптов -->
+    <script src="js/config.js?v=20"></script>
+    <script src="js/supabase.js?v=20"></script>
+    <script src="js/auth.js?v=20"></script>
+</body>
+</html>

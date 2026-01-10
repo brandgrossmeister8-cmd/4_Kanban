@@ -4,15 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Канбан Доска</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=15">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Канбан Доска</h1>
+            <div class="user-info">
+                <span id="user-name">Загрузка...</span>
+                <button onclick="logout()" class="btn-logout">Выход</button>
+            </div>
         </header>
 
-        <div class="board">
+        <!-- Переключатель между канбан и табличным видом -->
+        <div class="view-switcher">
+            <button id="view-board" class="view-btn active" onclick="switchView('board')">
+                Канбан
+            </button>
+            <button id="view-table" class="view-btn" onclick="switchView('table')">
+                Таблица
+            </button>
+        </div>
+
+        <!-- Панель фильтров -->
+        <div class="filters-panel">
+            <h3>Фильтры</h3>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label for="filter-creator">Постановщик</label>
+                    <select id="filter-creator">
+                        <option value="">Все постановщики</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filter-assignee">Исполнитель</label>
+                    <select id="filter-assignee">
+                        <option value="">Все исполнители</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filter-category">Категория</label>
+                    <select id="filter-category">
+                        <option value="">Все категории</option>
+                        <option value="bug">Ошибка</option>
+                        <option value="feature">Новая функция</option>
+                        <option value="improvement">Улучшение</option>
+                        <option value="documentation">Документация</option>
+                        <option value="testing">Тестирование</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filter-deadline-from">Срок от</label>
+                    <input type="date" id="filter-deadline-from">
+                </div>
+
+                <div class="filter-group">
+                    <label for="filter-deadline-to">Срок до</label>
+                    <input type="date" id="filter-deadline-to">
+                </div>
+
+                <div class="filter-actions">
+                    <button onclick="applyFilters()" class="btn-primary">Применить</button>
+                    <button onclick="clearFilters()" class="btn-secondary">Сбросить</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Канбан доска (вид по умолчанию) -->
+        <div id="board-view" class="board-view">
+            <div class="board">
             <div class="column" data-status="todo">
                 <div class="column-header">
                     <h2>К выполнению</h2>
@@ -40,8 +104,40 @@
                 <div class="tasks" id="done-tasks"></div>
             </div>
         </div>
+        </div>
+
+        <!-- Табличный вид (скрыт по умолчанию) -->
+        <div id="table-view" class="table-view" style="display: none;">
+            <div class="table-header">
+                <h2>Все задачи</h2>
+                <button onclick="addTaskFromTable()" class="btn-primary">+ Добавить задачу</button>
+            </div>
+
+            <div class="table-container">
+                <table class="tasks-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('id')">ID <span class="sort-icon">⇅</span></th>
+                            <th onclick="sortTable('title')">Название <span class="sort-icon">⇅</span></th>
+                            <th onclick="sortTable('description')">Описание <span class="sort-icon">⇅</span></th>
+                            <th onclick="sortTable('category')">Категория <span class="sort-icon">⇅</span></th>
+                            <th onclick="sortTable('creator')">Постановщик <span class="sort-icon">⇅</span></th>
+                            <th onclick="sortTable('assignee')">Исполнитель <span class="sort-icon">⇅</span></th>
+                            <th onclick="sortTable('deadline')">Срок <span class="sort-icon">⇅</span></th>
+                            <th onclick="sortTable('status')">Статус <span class="sort-icon">⇅</span></th>
+                            <th onclick="sortTable('created_at')">Создано <span class="sort-icon">⇅</span></th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-tasks-body">
+                        <!-- Заполняется динамически -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
+    <!-- Модальное окно для создания/редактирования задачи -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <h2>Новая задача</h2>
@@ -63,12 +159,17 @@
 
             <div class="form-group">
                 <label for="task-creator">Постановщик</label>
-                <input type="text" id="task-creator" placeholder="ФИО постановщика">
+                <select id="task-creator" disabled>
+                    <!-- Заполняется автоматически текущим пользователем -->
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="task-assignee">Исполнитель</label>
-                <input type="text" id="task-assignee" placeholder="ФИО исполнителя">
+                <select id="task-assignee">
+                    <option value="">Выберите исполнителя</option>
+                    <!-- Заполняется динамически -->
+                </select>
             </div>
 
             <div class="form-group">
@@ -90,6 +191,12 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Подключение Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Подключение наших скриптов -->
+    <script src="js/config.js?v=20"></script>
+    <script src="js/supabase.js?v=20"></script>
+    <script src="js/script.js?v=20"></script>
 </body>
 </html>

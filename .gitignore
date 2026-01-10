@@ -1,0 +1,60 @@
+# =====================================================
+# .gitignore для Канбан Доски
+# =====================================================
+
+# Переменные окружения (конфиденциально!)
+.env
+.env.local
+.env.production
+
+# Резервные копии конфигурации с реальными ключами
+config.js.backup
+*-backup.js
+
+# Node modules (если будете использовать)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Логи
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Операционная система
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / Редакторы
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Временные файлы
+*.tmp
+*.temp
+.cache/
+
+# Build outputs (если будете использовать сборку)
+dist/
+build/
+.next/
+out/
+
+# Тестовые файлы
+coverage/
+*.test.js
+
+# Дамп базы данных (если будете делать)
+*.sql.backup
+database-dump.sql
+
+# =====================================================
