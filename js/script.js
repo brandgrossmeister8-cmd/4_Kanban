@@ -189,7 +189,7 @@ async function applyFilters() {
         creator_id: document.getElementById('filter-creator').value || undefined,
         assignee_id: document.getElementById('filter-assignee').value || undefined,
         category: document.getElementById('filter-category').value || undefined,
-        status: document.getElementById('filter-status').value || undefined,
+        task_status: document.getElementById('filter-task-status').value || undefined,
         deadline_from: document.getElementById('filter-deadline-from').value || undefined,
         deadline_to: document.getElementById('filter-deadline-to').value || undefined,
     };
@@ -202,7 +202,7 @@ function clearFilters() {
     document.getElementById('filter-creator').value = '';
     document.getElementById('filter-assignee').value = '';
     document.getElementById('filter-category').value = '';
-    document.getElementById('filter-status').value = '';
+    document.getElementById('filter-task-status').value = '';
     document.getElementById('filter-deadline-from').value = '';
     document.getElementById('filter-deadline-to').value = '';
 
