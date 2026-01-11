@@ -676,8 +676,8 @@ async function handleDrop(e) {
 
     const newColumn = e.currentTarget.closest('.column');
     const oldColumn = draggingTask.closest('.column');
-    const newStatus = newColumn.dataset.status;
-    const oldStatus = oldColumn.dataset.status;
+    const newStatus = newColumn.dataset.taskStatus;
+    const oldStatus = oldColumn.dataset.taskStatus;
     const taskId = draggingTask.dataset.taskId;
 
     if (newStatus !== oldStatus) {
