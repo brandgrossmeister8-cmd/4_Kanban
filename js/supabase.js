@@ -69,9 +69,6 @@ try {
   // Создание клиента Supabase
   supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  console.log('✅ Supabase клиент успешно инициализирован');
-  console.log('📡 Подключение к:', SUPABASE_URL);
-
 } catch (error) {
   console.error('❌ Ошибка инициализации Supabase:', error);
   console.error('Убедитесь, что Supabase SDK подключён в HTML перед этим файлом');
@@ -94,7 +91,6 @@ window.checkSupabaseConnection = async function() {
   try {
     const { data, error } = await supabaseClient.from('profiles').select('count');
     if (error) throw error;
-    console.log('✅ Подключение к базе данных работает');
     return true;
   } catch (error) {
     console.error('❌ Ошибка подключения к базе данных:', error);
@@ -105,17 +101,16 @@ window.checkSupabaseConnection = async function() {
 // Получить текущего пользователя
 window.getCurrentUser = async function() {
   const { data: { user } } = await supabaseClient.auth.getUser();
-  console.log('Текущий пользователь:', user);
   return user;
 };
 
 // Вывести информацию о Supabase в консоль
 window.supabaseInfo = function() {
-  console.log('=== Информация о Supabase ===');
-  console.log('URL:', SUPABASE_URL);
-  console.log('Анонимный ключ загружен:', !!SUPABASE_ANON_KEY);
-  console.log('Клиент инициализирован:', !!supabaseClient);
-  console.log('============================');
+  return {
+    url: SUPABASE_URL,
+    hasKey: !!SUPABASE_ANON_KEY,
+    isInitialized: !!supabaseClient
+  };
 };
 
 // =====================================================

@@ -20,15 +20,12 @@ let sortDirection = 'asc';
 // =====================================================
 
 async function init() {
-    console.log('Инициализация приложения...');
-
     // Проверка аутентификации через localStorage
     const userId = localStorage.getItem('kanban_user_id');
     const userName = localStorage.getItem('kanban_user_name');
 
     if (!userId || !userName) {
         // Нет авторизации - редирект на страницу входа
-        console.log('Пользователь не авторизован, редирект на auth.html');
         window.location.href = 'auth.html';
         return;
     }
@@ -37,7 +34,6 @@ async function init() {
         id: userId, // UUID как строка
         full_name: userName
     };
-    console.log('Пользователь авторизован:', currentUser.full_name);
 
     // Загрузка данных
     try {
@@ -54,8 +50,6 @@ async function init() {
     setupDragAndDrop();
     updateAllCounts();
     populateUserDropdowns();
-
-    console.log('Приложение инициализировано');
 }
 
 // =====================================================
@@ -66,7 +60,6 @@ async function init() {
 async function loadUserProfile() {
     // Отображение имени пользователя в header
     document.getElementById('user-name').textContent = currentUser.full_name;
-    console.log('Профиль загружен:', currentUser.full_name);
 }
 
 // Загрузка всех пользователей (для выпадающих списков)
@@ -83,7 +76,6 @@ async function loadAllUsers() {
     }
 
     allUsers = data;
-    console.log('Загружено канбан-пользователей:', allUsers.length);
 }
 
 // Загрузка задач с фильтрами
@@ -126,7 +118,6 @@ async function loadTasks(filters = {}) {
     }
 
     tasks = data;
-    console.log('Загружено задач:', tasks.length);
 
     renderAllTasks();
     updateAllCounts();
@@ -194,7 +185,6 @@ async function applyFilters() {
         deadline_to: document.getElementById('filter-deadline-to').value || undefined,
     };
 
-    console.log('Применение фильтров:', currentFilters);
     await loadTasks(currentFilters);
 }
 
@@ -207,7 +197,6 @@ function clearFilters() {
     document.getElementById('filter-deadline-to').value = '';
 
     currentFilters = {};
-    console.log('Фильтры сброшены');
     loadTasks();
 }
 
@@ -306,7 +295,6 @@ async function saveTask() {
                 .eq('id', editingTaskId);
 
             if (error) throw error;
-            console.log('Задача обновлена:', editingTaskId);
 
         } else {
             // Создание новой задачи
@@ -315,7 +303,6 @@ async function saveTask() {
                 .insert([taskData]);
 
             if (error) throw error;
-            console.log('Задача создана');
         }
 
         closeModal();
@@ -340,7 +327,6 @@ async function deleteTask(taskId) {
 
         if (error) throw error;
 
-        console.log('Задача удалена:', taskId);
         await loadTasks(currentFilters);
 
     } catch (error) {
@@ -358,7 +344,6 @@ async function changeTaskStatus(taskId, newStatus) {
 
         if (error) throw error;
 
-        console.log('Статус задачи изменен:', taskId, newStatus);
         await loadTasks(currentFilters);
 
     } catch (error) {
@@ -690,8 +675,6 @@ async function handleDrop(e) {
 
             if (error) throw error;
 
-            console.log('Статус задачи обновлён:', taskId, newStatus);
-
             // Перерисовка задач
             await loadTasks(currentFilters);
 
@@ -709,8 +692,8 @@ async function handleDrop(e) {
 // =====================================================
 
 function updateCount(status) {
-    const count = tasks.filter(t => t.status === status).length;
-    const column = document.querySelector(`[data-status="${status}"]`);
+    const count = tasks.filter(t => t.task_status === status).length;
+    const column = document.querySelector(`[data-task-status="${status}"]`);
     if (column) {
         column.querySelector('.count').textContent = count;
     }
@@ -745,7 +728,6 @@ async function logout() {
     localStorage.removeItem('kanban_user_id');
     localStorage.removeItem('kanban_user_name');
 
-    console.log('Пользователь вышел');
     window.location.href = 'auth.html';
 }
 
@@ -782,5 +764,3 @@ document.addEventListener('DOMContentLoaded', () => {
 // =====================================================
 
 window.addEventListener('load', init);
-
-console.log('Script.js загружен');

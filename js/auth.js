@@ -30,12 +30,10 @@ async function checkExistingSession() {
 
             if (!error && data) {
                 // Пользователь найден - редирект на главную
-                console.log('Пользователь уже авторизован:', userName);
                 window.location.href = 'index.html';
                 return;
             } else {
                 // Пользователя нет в БД - очищаем localStorage
-                console.log('Пользователь не найден в БД, очищаем сессию');
                 localStorage.removeItem('kanban_user_id');
                 localStorage.removeItem('kanban_user_name');
             }
@@ -91,11 +89,8 @@ async function handleLogin() {
             // Пользователь найден
             userId = existingUser.id;
             userName = existingUser.full_name;
-            console.log('Пользователь найден:', userName);
         } else {
             // Пользователь не найден - создаём нового
-            console.log('Пользователь не найден, создаём новый профиль...');
-
             const newUserId = generateUUID();
 
             const { data: newUser, error: insertError } = await supabase
@@ -123,14 +118,11 @@ async function handleLogin() {
 
             userId = newUser.id;
             userName = newUser.full_name;
-            console.log('Новый пользователь создан:', userName);
         }
 
         // Сохранить данные пользователя в localStorage
         localStorage.setItem('kanban_user_id', userId);
         localStorage.setItem('kanban_user_name', userName);
-
-        console.log('✅ Вход выполнен успешно');
 
         // Редирект на главную страницу
         window.location.href = 'index.html';
@@ -259,5 +251,3 @@ async function toggleUsersList(event) {
         button.textContent = 'Показать список пользователей';
     }
 }
-
-console.log('✅ Auth.js загружен (простая система входа)');
