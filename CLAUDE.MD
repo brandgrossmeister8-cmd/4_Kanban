@@ -1,3 +1,40 @@
+# Инструкции для проекта Kanban
+
+## Обновление файлов на сервере
+
+**ВАЖНО:** Сервер НЕ обновляется автоматически! После каждого `git push` нужно ВРУЧНУЮ обновить сервер.
+
+### Алгоритм обновления (3 шага):
+
+**1. Push на GitHub:**
+```bash
+git add .
+git commit -m "описание"
+git push origin main
+```
+
+**2. Обновление на сервере:**
+- Откройте консоль Timeweb: https://hosting.timeweb.ru/ → Облачные серверы → Консоль
+- Войдите: `root` + пароль
+- Выполните команды:
+```bash
+cd /var/www/canban.brandgrossmeister.ru
+git pull origin main
+head -15 styles.css  # Проверка
+```
+
+**3. Очистите кеш браузера:**
+- Mac: `Cmd + Shift + R`
+- Windows: `Ctrl + Shift + R`
+
+### Проверка правильного дизайна:
+✅ Правильно: `background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);`
+❌ Неправильно: `:root { --bg-primary: #0a0e27;`
+
+**Подробная инструкция:** См. [SERVER-UPDATE-GUIDE.md](SERVER-UPDATE-GUIDE.md)
+
+---
+
 DISTILLED_AESTHETICS_PROMPT = """
 <frontend_aesthetics>
 You tend to converge toward generic, "on distribution" outputs. In frontend design, this creates what users call the "AI slop" aesthetic. Avoid this: make creative, distinctive frontends that surprise and delight. Focus on:
